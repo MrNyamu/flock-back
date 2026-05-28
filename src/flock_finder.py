@@ -325,7 +325,7 @@ class WiFi_Sniffer():
 
         parts = line.strip().split("\t")
 
-        if len(parts) < 9: return
+        if len(parts) < 10: return
 
 
         time_epoch = parts[0]
@@ -337,6 +337,7 @@ class WiFi_Sniffer():
         freq       = parts[6]
         subtype    = parts[7]
         seq        = parts[8]
+        iface_name = parts[9]
 
         if not src or src == "ff:ff:ff:ff:ff:ff": return
 
@@ -388,7 +389,7 @@ class WiFi_Sniffer():
                     Variables.ai_cameras_all["wifi"].append(data)
                     return
 
-                if cls.verbose: console.print(f"[bold red][-] Non AI Camera (WiFi): [yellow]{data}")
+                if cls.verbose: console.print(f"[bold red][-] Non AI Camera (WiFi):[bold yellow] {src}  [bold cyan]{iface_name}  [dim]{ssid or '—'}  ch {channel}")
 
             elif (Variables.packet) and (src in cls.flock_macs): console.print(f"[bold cyan][PKT] AI Camera (WiFi):[yellow] {data}"); DataBase.push_packet(save_data=data)
 
@@ -414,7 +415,8 @@ class WiFi_Sniffer():
             "-e", "wlan_radio.channel",
             "-e", "wlan_radio.frequency",
             "-e", "wlan.fc.type_subtype",
-            "-e", "wlan.seq"
+            "-e", "wlan.seq",
+            "-e", "frame.interface_name"
         ]
 
 
