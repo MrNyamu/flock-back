@@ -389,7 +389,7 @@ class WiFi_Sniffer():
                     Variables.ai_cameras_all["wifi"].append(data)
                     return
 
-                if cls.verbose: console.print(f"[bold red][-] Non AI Camera (WiFi):[bold yellow] {src}  [bold cyan]{iface_name}  [dim]{ssid or '—'}  ch {channel}")
+                if cls.verbose: console.print(f"[bold red][-] Non AI Camera (WiFi):[bold cyan] {iface_name}[bold yellow] {data}")
 
             elif (Variables.packet) and (src in cls.flock_macs): console.print(f"[bold cyan][PKT] AI Camera (WiFi):[yellow] {data}"); DataBase.push_packet(save_data=data)
 
