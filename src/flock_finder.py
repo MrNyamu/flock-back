@@ -424,7 +424,8 @@ class WiFi_Sniffer():
             cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
-            text=True
+            text=True,
+            bufsize=1
         )
 
 
