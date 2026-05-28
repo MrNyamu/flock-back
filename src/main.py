@@ -8,7 +8,7 @@ from pathlib import Path
 # NSM MODULES
 from vars import Variables
 from database import Utilities
-from flock_finder import Main_Thread
+from flock_finder import Main_Thread, Inject_Test
 from wardriver import Wardriver
 
 # CONSTANTS
@@ -46,6 +46,7 @@ class Main_UI():
         parser.add_argument("-preset", required=False, choices=["2.4", "5", "all"], help="Channel hop preset: 2.4 (1-11), 5 (36-161), all (default list)")
         parser.add_argument("-w",      action="store_true", help="Wardriver mode — auto detect all monitor adapters and split channels by band")
         parser.add_argument("-nb",     action="store_true", help="Disable BLE scanner")
+        parser.add_argument("-test",   action="store_true", help="Listen on -i for probe requests to verify injection is working")
 
 
         args = parser.parse_args()
@@ -60,7 +61,8 @@ class Main_UI():
         Variables.ble_scan_duration = args.bs    if args.bs    is not None else Variables.ble_scan_duration
         Variables.hops    = args.hops   if args.hops   is not None else Variables.hops
         if args.preset: Variables.hops = Variables.presets[args.preset]
-        if args.nb: Variables.ble = False
+        if args.nb:   Variables.ble         = False
+        if args.test: Variables.inject_test = True
 
 
 
@@ -97,6 +99,7 @@ class Main_UI():
         )
 
 
+        Inject_Test.main()
         Main_Thread.main()
 
 

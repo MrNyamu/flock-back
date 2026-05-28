@@ -99,13 +99,13 @@ class Wardriver():
         """Run from here"""
 
 
-        console.print(Panel("WarDriver Mode", style="bold red", border_style="bold purple"))
+        text = Panel("WarDriver Mode", style="bold red", border_style="bold purple", expand=False)
+                      
+        console.print(text)
 
         ifaces = cls._get_adapters()
 
-        if not ifaces:
-            console.print("[bold red][!] No monitor mode adapters found.[/bold red]")
-            return False
+        if not ifaces: console.print("[bold red][!] No monitor mode adapters found.[/bold red]"); return False
 
         console.print(f"[bold green][+] Found {len(ifaces)} adapter(s): {', '.join(ifaces)}[/bold green]")
 

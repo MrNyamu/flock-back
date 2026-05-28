@@ -537,5 +537,69 @@ class Main_Thread():
 
 
 
+class Inject_Test():
+    """Run tshark on -i and print all probe requests — verifies packet injection is going out over the air"""
+
+
+    @classmethod
+    def main(cls):
+        """Entry point"""
+
+        if not Variables.inject_test: return
+
+        iface = Variables.iface
+        if not iface: console.print("[bold red][-] -test requires -i <interface>"); return
+
+        console.print(f"[bold green][+] Inject test on [bold yellow]{iface}[bold green] — listening for probe requests (Ctrl+C to stop)...")
+
+        cmd = [
+            "tshark", "-i", iface,
+            "-l",
+            "-Y", "wlan.fc.type_subtype == 0x04",
+            "-T", "fields",
+            "-e", "frame.time_epoch",
+            "-e", "wlan.ta",
+            "-e", "wlan.ssid",
+        ]
+
+        process = None
+        seen = 0
+
+        try:
+
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                bufsize=1
+            )
+
+            for line in process.stdout:
+
+                parts = line.strip().split("\t")
+                if len(parts) < 2: continue
+
+                ts   = parts[0]
+                src  = parts[1]
+                ssid = parts[2] if len(parts) > 2 else ""
+                seen += 1
+
+                console.print(
+                    f"[bold cyan][INJECT TEST][/bold cyan]"
+                    f"  [bold yellow]#{seen}[/bold yellow]"
+                    f"  [bold green]src:[/bold green] {src}"
+                    f"  [bold green]ssid:[/bold green] {ssid or '(hidden)'}"
+                    f"  [bold green]ts:[/bold green] {ts}"
+                )
+
+        except KeyboardInterrupt: console.print(f"\n[bold red][-] Inject test stopped — {seen} probe requests seen")
+        except Exception as e:    console.print(f"[bold red]Exception Error:[bold yellow] {e}")
+        finally:
+            if process:
+                try: process.kill()
+                except: pass
+
+
 if __name__ == "__main__":
     Main_Thread.main()

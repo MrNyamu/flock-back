@@ -40,8 +40,9 @@ class Variables():
     ble_ai_cameras = []
     
 
-    ble     = True
-    ifaces  = {}
+    ble         = True
+    ifaces      = {}
+    inject_test = False
 
     LOCK = threading.RLock()
     console = Console()
