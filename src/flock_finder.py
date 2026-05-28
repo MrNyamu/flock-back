@@ -306,7 +306,15 @@ class BLE_Sniffer():
 
 
         console.print("[bold green][+] Starting BLE_Sniffer"); time.sleep(1)
-        asyncio.run(BLE_Sniffer.ble_scan(timeout=scan_duration)); scans += 1
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(BLE_Sniffer.ble_scan(timeout=scan_duration))
+        finally:
+            loop.close()
+
+        scans += 1
         console.print(f"[bold red][-] Killed -->[bold yellow] BLE_Sniffer")
 
 
@@ -438,7 +446,9 @@ class WiFi_Sniffer():
                 cls._line_parser(line)
 
         except Exception as e: console.print(f"[bold red][-] Tshark Error: {e}")
-        finally: process.kill()
+        finally:
+            process.kill()
+            process.wait()
 
 
 
