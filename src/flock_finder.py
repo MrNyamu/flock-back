@@ -325,7 +325,8 @@ class WiFi_Sniffer():
 
         parts = line.strip().split("\t")
 
-        if len(parts) < 10: return
+        if len(parts) < 9: return
+        iface_name = parts[9] if len(parts) > 9 else "?"
 
 
         time_epoch = parts[0]
@@ -337,7 +338,6 @@ class WiFi_Sniffer():
         freq       = parts[6]
         subtype    = parts[7]
         seq        = parts[8]
-        iface_name = parts[9]
 
         if not src or src == "ff:ff:ff:ff:ff:ff": return
 
