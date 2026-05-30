@@ -74,6 +74,9 @@ sudo venv/bin/python main.py -i wlan1 -p
 |------|-------------|---------|
 | `-i` | Monitor-mode WiFi interface | None |
 | `-b` | Bluetooth adapter | `hci0` |
+| `-w` | Wardriver mode — auto-detects all monitor adapters, splits channels by band, hops across 2.4GHz + 5GHz | Off |
+| `-k` | Kismet mode — polls Kismet REST API every 10s and runs sig matching against all seen devices. Channel hopping handled by Kismet, not flock-back. Use with `-w` when running alongside Dooku | Off |
+| `-nb` | Disable BLE scanner | Off |
 | `-p` | Packet mode — keep printing/saving repeat Flock hits | Off |
 | `-v` | Verbose — show non-Flock devices | Off |
 | `-g` | GPS serial port — **not implemented yet, do not use** | None |
@@ -90,6 +93,18 @@ sudo venv/bin/python main.py -i wlan1 -p
 - `5` — 5GHz only (36, 40, 44, 48, 149, 153, 157, 161)
 - `all` — default list
 
+**Common combos:**
+```bash
+# Standalone wardriving — flock-back handles everything
+sudo venv/bin/python main.py -w
+
+# Kismet mode — run alongside Kismet (e.g. via Dooku)
+sudo venv/bin/python main.py -w -k
+
+# Kismet mode, no BLE
+sudo venv/bin/python main.py -w -k -nb
+```
+
 ---
 
 ## Output
@@ -101,6 +116,12 @@ Finds are saved to `database/flocks.json` (newline-delimited JSON):
 ```
 
 Packet mode repeat hits are saved to `database/packets.json` in the same format.
+
+---
+
+## In The Wild
+
+> **[Dooku](https://github.com/nsm-barii/dooku)** — a hardened portable wardriving rig (Raspberry Pi 5, multiple monitor-mode adapters, runs headless) built around flock-back. Boots up, creates its own AP, and runs flock-back automatically. If you want to see this tool deployed in the real world, that's where to look.
 
 ---
 
