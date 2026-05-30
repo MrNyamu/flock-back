@@ -114,6 +114,7 @@ class Wardriver():
         for iface, channels in splits.items():
             Variables.ifaces[iface] = channels
             console.print(f"[bold green][+][/bold green]  [bold white]{iface}[/bold white]  [dim]->[/dim]  [bold purple]{channels}[/bold purple]")
-            Background_Threads.channel_hopper(iface=iface, channels=channels)
+            if not Variables.kismet:
+                Background_Threads.channel_hopper(iface=iface, channels=channels)
 
         return True
