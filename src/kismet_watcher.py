@@ -17,7 +17,7 @@ from signatures import FLOCK_SIGNATURES
 console      = Variables.console
 KISMET_URL   = "http://127.0.0.1:2501"
 KISMET_CONF  = Path.home() / ".kismet" / "kismet_httpd.conf"
-POLL_INTERVAL = 10  # seconds between Kismet polls
+POLL_INTERVAL = 2  # seconds between Kismet polls
 
 KISMET_FIELDS = [
     ["kismet.device.base.macaddr",                                                                        "mac"       ],

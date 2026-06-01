@@ -59,7 +59,7 @@ class Main_UI():
         Variables.gps     = args.g   or False
         Variables.packet  = args.p   or False
         Variables.verbose = args.v   or False
-        Variables.delay            = args.delay if args.delay is not None else Variables.delay
+        Variables.delay   = args.delay if args.delay is not None else Variables.delay
         Variables.ble_scan_duration = args.bs    if args.bs    is not None else Variables.ble_scan_duration
         Variables.hops    = args.hops   if args.hops   is not None else Variables.hops
         if args.preset: Variables.hops = Variables.presets[args.preset]
